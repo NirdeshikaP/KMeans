@@ -2,8 +2,8 @@ from Kmeans_Helper import *
 import matplotlib.pyplot as mpl
 
 # Hyper parameters
-k = 10
-r = 10
+k = 3
+r = 5
 
 
 # Groups the data into k-clusters such that each point belongs to the cluster with closest centroid.
@@ -36,7 +36,7 @@ def k_means(k):
     clustered_data = assign_clusters(data=data, k=k, centroids=initial_centroids)
 
     print('Initial Within cluster sum of squares WCSS = ' + str(find_wcss(clustered_data=clustered_data, centroid=initial_centroids)))
-
+    plot_graph(clustered_data=clustered_data, centroids=initial_centroids, text="Initial Clustering")
     is_assignment_changed = True
     number_of_runs = 0
 
@@ -52,8 +52,20 @@ def k_means(k):
         clustered_data = updated_clustered_data
         number_of_runs += 1
 
+    plot_graph(clustered_data=clustered_data, centroids=updated_centroids, text="Final Clustering")
     print('Final Within cluster sum of squares WCSS = ' + str(find_wcss(clustered_data=clustered_data, centroid= updated_centroids)))
     print('Total number of runs required to converge ' + str(number_of_runs))
+
+
+def plot_graph(clustered_data, centroids, text=""):
+
+    for key in clustered_data:
+        mpl.scatter(*zip(*clustered_data[key]), s=10)
+
+    centroid = [centroids[key] for key in centroids]
+    mpl.scatter(*zip(*centroid), marker='+')
+    mpl.text(0, 4, text,  fontsize=10, verticalalignment='top', horizontalalignment='center')
+    mpl.show()
 
 
 def main():
@@ -63,13 +75,7 @@ def main():
 
 
 if __name__ == "__main__":
-    data = [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
-    print(zip(*data))
-    mpl.scatter(*zip(*data))
+    main()
 
-    data = [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4)]
-    print(zip(*data))
-    mpl.scatter(*zip(*data), marker='+')
-    mpl.show()
 
 
